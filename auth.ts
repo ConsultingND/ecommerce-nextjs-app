@@ -2,7 +2,6 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import AzureAD from "next-auth/providers/azure-ad"
-import bcrypt from "bcryptjs"
 import { connectToDB } from "./app/api/db"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -20,6 +19,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         try {
+          // Dynamically import bcrypt only when needed (not in Edge runtime)
+          const bcrypt = await import("bcryptjs")
           const { db } = await connectToDB()
 
           // Find user by email
@@ -84,7 +85,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/auth/login',
   },
 
   session: {
