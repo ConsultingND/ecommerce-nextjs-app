@@ -13,7 +13,7 @@ export default async function AppPage() {
       <div className="w-full max-w-md space-y-8 text-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            This page can only be seen by logged-in users.
+            Welcome! Ecommerce done the right way!
           </h1>
           {session.user?.email && (
             <p className="mt-4 text-gray-600">
