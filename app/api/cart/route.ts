@@ -2,6 +2,7 @@
 import { connectToDB } from "@/app/api/db";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
+import type { UpdateFilter } from "mongodb";
 
 type CartBody = {
     productId: string;
@@ -88,9 +89,13 @@ export async function POST(request: NextRequest) {
         }
 
         // Add product to cart
+        const updateOperation: UpdateFilter<Cart> = {
+            $push: { cartIds: productId }
+        };
+
         const updatedCart = await db.collection<Cart>('carts').findOneAndUpdate(
             { userId },
-            { $push: { cartIds: productId } },
+            updateOperation,
             { upsert: true, returnDocument: 'after' }
         );
 
@@ -144,9 +149,13 @@ export async function DELETE(request: NextRequest) {
         }
 
         // Remove product from cart
+        const updateOperation: UpdateFilter<Cart> = {
+            $pull: { cartIds: productId }
+        };
+
         const updatedCart = await db.collection<Cart>('carts').findOneAndUpdate(
             { userId },
-            { $pull: { cartIds: productId } },
+            updateOperation,
             { returnDocument: 'after' }
         );
 
