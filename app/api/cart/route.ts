@@ -7,6 +7,11 @@ type CartBody = {
     productId: string;
 }
 
+type Cart = {
+    userId: string;
+    cartIds: string[];
+}
+
 // GET - Load shopping cart for authenticated user
 export async function GET(request: NextRequest) {
     try {
@@ -23,7 +28,7 @@ export async function GET(request: NextRequest) {
         const { db } = await connectToDB();
 
         // Get user's cart from database
-        const userCart = await db.collection('carts').findOne({ userId });
+        const userCart = await db.collection<Cart>('carts').findOne({ userId });
 
         if (!userCart) {
             return NextResponse.json([], { status: 200 });
@@ -83,11 +88,18 @@ export async function POST(request: NextRequest) {
         }
 
         // Add product to cart
-        const updatedCart = await db.collection('carts').findOneAndUpdate(
+        const updatedCart = await db.collection<Cart>('carts').findOneAndUpdate(
             { userId },
             { $push: { cartIds: productId } },
             { upsert: true, returnDocument: 'after' }
         );
+
+        if (!updatedCart) {
+            return NextResponse.json(
+                { error: 'Failed to update cart' },
+                { status: 500 }
+            );
+        }
 
         // Get updated cart products
         const cartProducts = await db.collection('products').find({
@@ -132,7 +144,7 @@ export async function DELETE(request: NextRequest) {
         }
 
         // Remove product from cart
-        const updatedCart = await db.collection('carts').findOneAndUpdate(
+        const updatedCart = await db.collection<Cart>('carts').findOneAndUpdate(
             { userId },
             { $pull: { cartIds: productId } },
             { returnDocument: 'after' }

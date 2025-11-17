@@ -5,8 +5,8 @@ export const dynamic = 'force-dynamic';
 export default async function ProductsPage() {
   const response = await fetch(`http://localhost:3000/api/products`); //loading the products
   const products = await response.json();
-  
-  const cartResponse = await fetch(`http://localhost:3000/api/users/2/cart`); //load shopping the cart
+
+  const cartResponse = await fetch(`http://localhost:3000/api/cart`); //load shopping cart using session
   const cartProducts = await cartResponse.json()
 
   return (

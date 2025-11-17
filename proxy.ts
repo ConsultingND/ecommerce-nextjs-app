@@ -29,9 +29,6 @@ export default auth((req) => {
   return
 })
 
-// Force Node.js runtime instead of Edge runtime to support crypto/bcrypt
-export const runtime = 'nodejs'
-
 // Configure which routes the middleware runs on
 export const config = {
   matcher: [

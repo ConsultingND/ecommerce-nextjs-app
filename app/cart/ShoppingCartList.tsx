@@ -9,7 +9,7 @@ export default function ShoppingCartList({ initialCartProducts }: { initialCartP
   const [cartProduts, setCartProducts] = useState(initialCartProducts);
 
   async function removeFromCart(productId: string) {
-    const response = await fetch(`http://localhost:3000/api/users/2/cart`, {
+    const response = await fetch(`http://localhost:3000/api/cart`, {
       method: 'DELETE',
       body: JSON.stringify({
         productId,
@@ -18,7 +18,7 @@ export default function ShoppingCartList({ initialCartProducts }: { initialCartP
         'Content-Type' : 'application/json'
       }
     });
-    
+
     const updatedCartProducts = await response.json()
     setCartProducts(updatedCartProducts);
   }

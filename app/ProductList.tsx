@@ -11,7 +11,7 @@ export default function ProductsList({ products, initialCartProducts } : {produc
     
     // Send a POST req, using the fetch function, we applied on the client side to send a request to the addToCart route handler.
     async function addToCart(productId: string) {
-        const response = await fetch(`http://localhost:3000/api/users/2/cart`, ({
+        const response = await fetch(`http://localhost:3000/api/cart`, ({
             method: 'POST',
             body: JSON.stringify({
                 productId
@@ -27,7 +27,7 @@ export default function ProductsList({ products, initialCartProducts } : {produc
     }
 
     async function removeFromCart(productId: string) {
-        const response = await fetch(`http://localhost:3000/api/users/2/cart`, ({
+        const response = await fetch(`http://localhost:3000/api/cart`, ({
             method: 'DELETE',
             body: JSON.stringify({
                 productId
