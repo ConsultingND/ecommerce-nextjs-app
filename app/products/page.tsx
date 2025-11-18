@@ -1,15 +1,28 @@
 import ProductsList from "../ProductList"
+import { auth } from "@/auth"
+import { connectToDB } from "@/app/api/db"
+import { Product } from "../product-data"
 
 export const dynamic = 'force-dynamic';
 
 export default async function ProductsPage() {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+  // Get session for authenticated user
+  const session = await auth();
 
-  const response = await fetch(`${baseUrl}/api/products`, { cache: 'no-cache' }); //loading the products
-  const products = await response.json();
+  // Fetch products directly from database
+  const { db } = await connectToDB();
+  const products = await db.collection('products').find({}).toArray() as unknown as Product[];
 
-  const cartResponse = await fetch(`${baseUrl}/api/cart`, { cache: 'no-cache' }); //load shopping cart using session
-  const cartProducts = await cartResponse.json()
+  // Fetch cart if user is logged in
+  let cartProducts: Product[] = [];
+  if (session?.user?.id) {
+    const userCart = await db.collection('carts').findOne({ userId: session.user.id });
+    if (userCart) {
+      cartProducts = await db.collection('products').find({
+        id: { $in: userCart.cartIds }
+      }).toArray() as unknown as Product[];
+    }
+  }
 
   return (
     <div className="container mx-auto p-8">

@@ -1,14 +1,16 @@
 // Add basic fetching functionality to the product detail page.
 
 import NotFoundPage from "@/app/not-found";
+import { connectToDB } from "@/app/api/db";
 
 export const dynamic = 'force-dynamic';
 
 export default async function ProductDetailPage({ params }: {params: Promise<{ id: string}>}){
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+  const productId = (await params).id;
 
-  const response = await fetch(`${baseUrl}/api/products/` + (await params).id, { cache: 'no-cache' });
-  const product = await response.json();
+  // Fetch product directly from database
+  const { db } = await connectToDB();
+  const product = await db.collection('products').findOne({ id: productId });
     
   if (!product) {
     return <NotFoundPage />
