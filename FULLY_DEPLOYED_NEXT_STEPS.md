@@ -170,3 +170,60 @@
 
   Great work getting this live! 🚀✨
 
+---
+
+## ⚡ Quick Reference
+
+### Common Commands
+
+```bash
+# Development
+npm run dev              # Start dev server (localhost:3000)
+npm run build            # Test production build locally
+npm run start            # Run production build locally
+
+# Deployment
+git add .                # Stage changes
+git commit -m "message"  # Commit changes
+git push origin main     # Deploy to Vercel (auto-deploys)
+
+# Environment
+# Local:       .env file
+# Production:  Vercel Dashboard → Settings → Environment Variables
+```
+
+### Key Files
+
+```
+auth.ts                  # Authentication configuration
+app/api/cart/route.ts    # Cart API endpoints
+app/products/page.tsx    # Products page (server component)
+app/layout.tsx           # Root layout with SessionProvider
+next.config.ts           # Next.js configuration
+.env.example             # Dev environment template
+.env.production.example  # Production environment template
+```
+
+### Troubleshooting Checklist
+
+If something breaks:
+1. Check Vercel deployment logs
+2. Verify environment variables are set
+3. Check MongoDB Atlas connection
+4. Test build locally: `npm run build`
+5. Clear browser cookies and re-login
+6. Check browser console for errors
+
+### Support
+
+- **Vercel Docs**: https://vercel.com/docs
+- **Next.js Docs**: https://nextjs.org/docs
+- **NextAuth Docs**: https://next-auth.js.org
+- **MongoDB Docs**: https://www.mongodb.com/docs
+
+---
+
+**Document Last Updated**: November 18, 2025
+**Production Status**: ✅ Live and Working
+**Version**: 1.0.0
+
