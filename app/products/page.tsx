@@ -3,10 +3,12 @@ import ProductsList from "../ProductList"
 export const dynamic = 'force-dynamic';
 
 export default async function ProductsPage() {
-  const response = await fetch(`http://localhost:3000/api/products`); //loading the products
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
+  const response = await fetch(`${baseUrl}/api/products`, { cache: 'no-cache' }); //loading the products
   const products = await response.json();
 
-  const cartResponse = await fetch(`http://localhost:3000/api/cart`); //load shopping cart using session
+  const cartResponse = await fetch(`${baseUrl}/api/cart`, { cache: 'no-cache' }); //load shopping cart using session
   const cartProducts = await cartResponse.json()
 
   return (
